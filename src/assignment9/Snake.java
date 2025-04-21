@@ -14,6 +14,10 @@ public class Snake {
 		//FIXME - set up the segments instance variable
 		deltaX = 0;
 		deltaY = 0;
+		
+		this.segments = new LinkedList<>();
+		BodySegment firstSegment = new BodySegment(0.5, 0.5, SEGMENT_SIZE);
+		segments.add(firstSegment);
 	}
 	
 	public void changeDirection(int direction) {
@@ -38,6 +42,22 @@ public class Snake {
 	 */
 	public void move() {
 		//FIXME
+		for (int i = segments.size() - 1; i >0; i-- ) { // starting from the back of the list
+//			BodySegment currently = segments.get(i);
+			double xPrevious = segments.get(i-1).getX();
+			double yPrevious = segments.get(i-1).getY(); // x and y position from tail will get the position from the segment right before it
+			segments.get(i).setX(xPrevious);
+			segments.get(i).setY(yPrevious);
+
+
+		}
+		
+		
+		BodySegment head = segments.get(0);
+		double newX = head.getX() + deltaX;  
+		double newY = head.getY() + deltaY; 
+		head.setX(newX);
+		head.setY(newY);
 	}
 	
 	/**
@@ -45,6 +65,9 @@ public class Snake {
 	 */
 	public void draw() {
 		//FIXME
+		for(int i = 0; i < segments.size(); i++) {
+			segments.get(i).draw();
+		}
 	}
 	
 	/**
@@ -53,6 +76,16 @@ public class Snake {
 	 * @return true if the snake successfully ate the food
 	 */
 	public boolean eatFood(Food f) {
+		BodySegment head = segments.get(0);
+		double distance = Math.sqrt(Math.pow(head.getX() - f.getX(), 2) + Math.pow(head.getY() - f.getY(), 2));
+
+		if (distance < SEGMENT_SIZE + Food.FOOD_SIZE) { 
+			int end = segments.size() - 1;
+			BodySegment lastSegment =segments.get(end);
+			BodySegment newSegment = new BodySegment(lastSegment.getX(), lastSegment.getX(), SEGMENT_SIZE);
+			segments.add(newSegment);
+			return true;
+		}
 		//FIXME
 		return false;
 	}
@@ -63,6 +96,13 @@ public class Snake {
 	 */
 	public boolean isInbounds() {
 		//FIXME
-		return true;
+		BodySegment head = segments.get(0);
+		double x = head.getX();
+		double y = head.getY();
+		if (x >= 0 && x <= 1 && y >= 0 && y <= 1) {
+			return true;
+		} else { 
+			return false;
+		}
 	}
 }
