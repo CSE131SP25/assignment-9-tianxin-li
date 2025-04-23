@@ -82,7 +82,7 @@ public class Snake {
 		if (distance < SEGMENT_SIZE + Food.FOOD_SIZE) { 
 			int end = segments.size() - 1;
 			BodySegment lastSegment =segments.get(end);
-			BodySegment newSegment = new BodySegment(lastSegment.getX(), lastSegment.getX(), SEGMENT_SIZE);
+			BodySegment newSegment = new BodySegment(lastSegment.getX(), lastSegment.getY(), SEGMENT_SIZE);
 			segments.add(newSegment);
 			return true;
 		}
